@@ -1,0 +1,5 @@
+modbus Bouadrate 19200.
+EM meter Fail.
+Stoptxn and billing logic update.
+stopTxn reson update in billing screen.
+

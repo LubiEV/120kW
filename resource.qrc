@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/NGUN-1.png</file>
+        <file>images/NGUN-2.png</file>
+        <file>images/NGUN-3.png</file>
+        <file>images/NGUN-4.png</file>
+        <file>images/NLubi Logo.png</file>
+        <file>images/NWelcome screen.png</file>
+        <file>images/CLUD-1.png</file>
+        <file>images/CLUD-2.png</file>
+        <file>images/HOOME-1.png</file>
+        <file>images/HOOME-2.png</file>
+        <file>images/Setting-1.png</file>
+        <file>images/Setting-2.png</file>
+        <file>images/Welcome screen.png</file>
+        <file>images/WIFI-1.png</file>
+        <file>images/WIFI-2.png</file>
+        <file>images/RFID.png</file>
+        <file>images/ALM_ON.jpg</file>
+        <file>images/ALM_No.jpg</file>
+        <file>images/ALM_Mute.jpg</file>
+    </qresource>
+</RCC>

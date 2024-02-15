@@ -203,7 +203,7 @@
      <string notr="true">background-color:rgb(49,68,82)</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="label_car">
@@ -721,6 +721,7 @@ border: 1px solid #FFFFFF;border-radius:10px;</string>
        <font>
         <family>Ubuntu</family>
         <pointsize>16</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <strikeout>false</strikeout>
         <stylestrategy>PreferDefault</stylestrategy>
@@ -1260,6 +1261,7 @@ color : red; </string>
        <font>
         <family>Ubuntu</family>
         <pointsize>16</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <strikeout>false</strikeout>
         <stylestrategy>PreferDefault</stylestrategy>
@@ -2590,6 +2592,7 @@ border: 1px solid #FFFFFF;border-radius:10px;</string>
       <property name="font">
        <font>
         <pointsize>11</pointsize>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -2792,13 +2795,14 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>190</x>
         <y>330</y>
-        <width>180</width>
+        <width>210</width>
         <height>30</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2825,6 +2829,7 @@ color:red;</string>
       <property name="font">
        <font>
         <pointsize>11</pointsize>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -2854,6 +2859,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <pointsize>11</pointsize>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -2884,6 +2890,7 @@ p, li { white-space: pre-wrap; }
        <font>
         <family>Tlwg Mono</family>
         <pointsize>11</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2910,7 +2917,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_Tempreture_plus">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>420</x>
         <y>330</y>
         <width>70</width>
         <height>31</height>
@@ -2926,7 +2933,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_Tempreture_minus">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>510</x>
         <y>330</y>
         <width>70</width>
         <height>31</height>

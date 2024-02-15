@@ -602,6 +602,7 @@ public:
         font1.setFamily(QString::fromUtf8("Ubuntu"));
         font1.setPointSize(16);
         font1.setBold(false);
+        font1.setWeight(50);
         font1.setStrikeOut(false);
         font1.setStyleStrategy(QFont::PreferDefault);
         Status->setFont(font1);
@@ -1021,6 +1022,7 @@ public:
         QFont font3;
         font3.setPointSize(11);
         font3.setBold(true);
+        font3.setWeight(75);
         label_8->setFont(font3);
         label_8->setStyleSheet(QString::fromUtf8("P_ac"));
         label_8->setTextFormat(Qt::RichText);
@@ -1074,10 +1076,11 @@ public:
         t1_lbRemainTime->setFrameShape(QFrame::Panel);
         lbl_ERROR_CODE = new QLabel(page_6);
         lbl_ERROR_CODE->setObjectName(QString::fromUtf8("lbl_ERROR_CODE"));
-        lbl_ERROR_CODE->setGeometry(QRect(190, 330, 180, 30));
+        lbl_ERROR_CODE->setGeometry(QRect(190, 330, 210, 30));
         QFont font5;
-        font5.setPointSize(14);
+        font5.setPointSize(10);
         font5.setBold(false);
+        font5.setWeight(50);
         lbl_ERROR_CODE->setFont(font5);
         lbl_ERROR_CODE->setStyleSheet(QString::fromUtf8("background-color:rgb(255,255,255);\n"
 "color:red;"));
@@ -1101,6 +1104,7 @@ public:
         font6.setFamily(QString::fromUtf8("Tlwg Mono"));
         font6.setPointSize(11);
         font6.setBold(false);
+        font6.setWeight(50);
         label_39->setFont(font6);
         label_39->setStyleSheet(QString::fromUtf8(""));
         label_39->setFrameShape(QFrame::NoFrame);
@@ -1108,11 +1112,11 @@ public:
         label_39->setTextFormat(Qt::RichText);
         label_Tempreture_plus = new QLabel(page_6);
         label_Tempreture_plus->setObjectName(QString::fromUtf8("label_Tempreture_plus"));
-        label_Tempreture_plus->setGeometry(QRect(380, 330, 70, 31));
+        label_Tempreture_plus->setGeometry(QRect(420, 330, 70, 31));
         label_Tempreture_plus->setStyleSheet(QString::fromUtf8("background-color:rgb(255,255,255)"));
         label_Tempreture_minus = new QLabel(page_6);
         label_Tempreture_minus->setObjectName(QString::fromUtf8("label_Tempreture_minus"));
-        label_Tempreture_minus->setGeometry(QRect(490, 330, 70, 31));
+        label_Tempreture_minus->setGeometry(QRect(510, 330, 70, 31));
         label_Tempreture_minus->setStyleSheet(QString::fromUtf8("background-color:rgb(255,255,255)"));
         label_59 = new QLabel(page_6);
         label_59->setObjectName(QString::fromUtf8("label_59"));
@@ -4480,7 +4484,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
         pushButton_CCS->setDefault(false);
         pushButton_CCS_2->setDefault(false);
         stackedWidget_Admin->setCurrentIndex(11);

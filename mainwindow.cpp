@@ -610,8 +610,8 @@ void MainWindow::ACGunStatus(int mGun)
        {
            ui->label_CCS_Status->setText("Emergency Switch press");
            CCS2.Reson = CCS.Reson = EmergencyStop;
-           ChargerUI_Info.ui_Charger_ErrorCode = EmergencyStop;
-           ChargerUI_Info_2.ui_Charger_ErrorCode = EmergencyStop;
+           ChargerUI_Info.ui_Charger_ErrorCode = I_O_EMPress;
+           ChargerUI_Info_2.ui_Charger_ErrorCode = I_O_EMPress;
            CCS_relay_status(G_faulted);
            CCS_relay_status(G_faulted_2);
        }
@@ -731,7 +731,8 @@ void MainWindow::ACGunStatus(int mGun)
            {
                ui->label_CCS_Status->setText("NO Error....");
            }
-           CCS.Error= CCS2.Error = NoError;
+
+           CCS.Error = CCS2.Error = NoError;
            if(CCS.start != Charging_Start)
            {
                 CCS_relay_status(G_Available);
@@ -767,7 +768,8 @@ void MainWindow::Start_Charger(int Gun)
 {
   if((CCS.start == Charging_Stop) && (Gun == 1))
     {            
-        SAFE_DELETE(pElapsedTime)
+        SAFE_DELETE(pElapsedTime)                
+        Sharing.G1_Need_Tb_LS = LS_No;
         memset(&ChargerUI_Info, 0, sizeof(stChargerUI_Info));
         pElapsedTime = new QElapsedTimer;
         pElapsedTime->start();
@@ -793,6 +795,7 @@ void MainWindow::Start_Charger(int Gun)
    else if((CCS2.start == Charging_Stop) && (Gun == 2))
     {
         SAFE_DELETE(pElapsedTime_2)
+        Sharing.G2_Need_Tb_LS = LS_No;
         memset(&ChargerUI_Info_2, 0, sizeof(stChargerUI_Info));
         pElapsedTime_2 = new QElapsedTimer;
         pElapsedTime_2->start();
@@ -825,6 +828,7 @@ void MainWindow::Remot_Start_Charger(int Gun)
 //             ui->label_rfidstatus->setText(tr("<html><head/><body><p><span style=' font-weight:600; color:#ffff00;'>RFID card Read Succesfully</span></p><p><span style=' font-weight:600; color:#ffff00;'>Please wait for charging</span></p></body></html>"));
 //        }
          SAFE_DELETE(pElapsedTime)
+         Sharing.G1_Need_Tb_LS = LS_No;
          memset(&ChargerUI_Info, 0, sizeof(stChargerUI_Info));
 
          pElapsedTime = new QElapsedTimer;
@@ -853,6 +857,7 @@ void MainWindow::Remot_Start_Charger(int Gun)
      else if((CCS2.start == Charging_Stop) && (Gun == 2))
      {
          SAFE_DELETE(pElapsedTime_2)
+         Sharing.G2_Need_Tb_LS = LS_No;
          memset(&ChargerUI_Info_2, 0, sizeof(stChargerUI_Info));
          pElapsedTime_2 = new QElapsedTimer;
          pElapsedTime_2->start();
@@ -1045,6 +1050,7 @@ void MainWindow::LoadSharingStatus(void)
     {
         Sharing.G1_Is_Available_LS = LS_Available;
     }
+    qDebug()<<"CCS Gun1 Status : "<<CCS.Status<<endl;
 }
 void MainWindow::LoadSharingStatus_2(void)
 {
@@ -1052,6 +1058,7 @@ void MainWindow::LoadSharingStatus_2(void)
     {
         Sharing.G2_Is_Available_LS = LS_Available;
     }
+    qDebug()<<"CCS Gun2 Status : "<<CCS2.Status<<endl;
 }
 void MainWindow::End_Charger_2(void)
 {
@@ -1713,21 +1720,17 @@ void MainWindow::update_Charging_Info(stChargerUI_Info cInfo)
                     QString::number(ChargerUI_Info.ui_Sec).rightJustified(2, '0');
     ui->t1_lbRemainTime->setText(sTime);
 
-    if(cInfo.ui_Plc_Error_Code > 0) // || cInfo.ui_Plc_Error_Code )
+    if((cInfo.ui_Plc_Error_Code > 0)  || (cInfo.ui_Plc_Error_Code > 0 ))
     {
-        ui->lbl_ERROR_CODE->setText("Error : " + QString::number(cInfo.ui_Plc_Error_Code));
-        ui->lbl_ERROR_CODE->setVisible(true);
-    }
-    else if(cInfo.ui_Charger_ErrorCode > 0)
-    {
-         ui->lbl_ERROR_CODE->setText("Error : " + QString::number(cInfo.ui_Charger_ErrorCode));
-         ui->lbl_ERROR_CODE->setVisible(true);
-    }
+        //ui->lbl_ERROR_CODE->setText("Error : " + QString::number(cInfo.ui_Plc_Error_Code));
+        //ui->lbl_ERROR_CODE->setVisible(true);
+    }   
     else
     {
-      // ui->lbl_ERROR_CODE->setText("Error : ");
-         ui->lbl_ERROR_CODE->setVisible(false);
-    }    
+        // ui->lbl_ERROR_CODE->setText("Error : ");
+        //ui->lbl_ERROR_CODE->setVisible(false);
+        ui->lbl_ERROR_CODE->setText("NeedToLS :" + QString::number(Sharing.G1_Need_Tb_LS)+"G2_Avail."+QString::number(Sharing.G2_Is_Available_LS)+"Que:"+QString::number(can_module.length()));
+    }
 }
 void MainWindow::Charging_calculation()
 {
@@ -1825,7 +1828,10 @@ void MainWindow::Charging_calculation()
              Stop_Charger(1);
              CCS_relay_status(G_Discharging);
              CCS.start = Charging_Stop;
-
+             if(Sharing.G1_Need_Tb_LS == LS_Active)
+             {
+                 Sharing.G1_Need_Tb_LS = LS_No;
+             }
              QString temp{"<html><head/><body><p><span style=' color:#ffffff;'>G1 Payment Details</span></p></body></html>"};
              ui->label_Payment->setText(temp);
 
@@ -1864,13 +1870,14 @@ void MainWindow::Charging_calculation()
             ChargerUI_Info.Temp_DC_Neg = CCS.Tempreture_dcN;
             ChargerUI_Info.Temp_DC_Pos = CCS.Tempreture_dcP;
             this->update_Charging_Info(ChargerUI_Info);
+
             if(ChargerUI_Info.ui_Charger_ErrorCode > 0 )
             {
-              ui->lbl_ERROR_CODE->setText("Charger Err.:"+ QString::number(ChargerUI_Info.ui_Charger_ErrorCode)+"Again Start: " + QString::number(60 - ChargerUI_Info.ui_ElapsedTime));
+              ui->lbl_ERROR_CODE->setText("Ch_Err. : "+ QString::number(ChargerUI_Info.ui_Charger_ErrorCode)+" - Restart : " + QString::number(60 - ChargerUI_Info.ui_ElapsedTime));
             }
             else if(ChargerUI_Info.ui_Plc_Error_Code > 0)
             {
-              ui->lbl_ERROR_CODE->setText("PLC Err.:"+ QString::number(ChargerUI_Info.ui_Plc_Error_Code)+"Again Start: " + QString::number(60 - ChargerUI_Info.ui_ElapsedTime));
+              ui->lbl_ERROR_CODE->setText("PLC_Err. : "+ QString::number(ChargerUI_Info.ui_Plc_Error_Code)+" - Restart : " + QString::number(60 - ChargerUI_Info.ui_ElapsedTime));
             }
             ui->lbl_ERROR_CODE->setVisible(true);
         }
@@ -1963,6 +1970,10 @@ void MainWindow::Charging_calculation()
             {
                  CAN_TX_2.Load_Sharing = false;
                  Stop_Charger(2);
+                 if(Sharing.G2_Need_Tb_LS == LS_Active)
+                 {
+                     Sharing.G2_Need_Tb_LS = LS_No;
+                 }
                  CCS_relay_status(G_Discharging_2);
                  CCS2.start = Charging_Stop;
 
@@ -2005,14 +2016,13 @@ void MainWindow::Charging_calculation()
             ChargerUI_Info_2.Temp_DC_Neg = CCS2.Tempreture_dcN;
             ChargerUI_Info_2.Temp_DC_Pos = CCS2.Tempreture_dcP;
             this->update_Charging_Info(ChargerUI_Info_2);
-
-            if(ChargerUI_Info_2.ui_Charger_ErrorCode > 0 )
+            if(ChargerUI_Info.ui_Charger_ErrorCode > 0 )
             {
-                ui->lbl_ERROR_CODE->setText("Charger Err.: "+ QString::number(ChargerUI_Info_2.ui_Charger_ErrorCode)+"Again Start : " + QString::number(60 - ChargerUI_Info.ui_ElapsedTime));
+              ui->lbl_ERROR_CODE->setText("Ch_Err. : "+ QString::number(ChargerUI_Info_2.ui_Charger_ErrorCode)+" Restart : " + QString::number(60 - ChargerUI_Info_2.ui_ElapsedTime));
             }
-            else if(ChargerUI_Info_2.ui_Plc_Error_Code > 0)
+            else if(ChargerUI_Info.ui_Plc_Error_Code > 0)
             {
-                ui->lbl_ERROR_CODE->setText("PLC Err.: "+ QString::number(ChargerUI_Info_2.ui_Plc_Error_Code)+"Again Start : " + QString::number(60 - ChargerUI_Info.ui_ElapsedTime));
+              ui->lbl_ERROR_CODE->setText("PLC_Err. : "+ QString::number(ChargerUI_Info_2.ui_Plc_Error_Code)+" Restart : " + QString::number(60 - ChargerUI_Info_2.ui_ElapsedTime));
             }
             ui->lbl_ERROR_CODE->setVisible(true);
         } 

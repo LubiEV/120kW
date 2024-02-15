@@ -45,6 +45,7 @@ void dccomboplc_2::initValues()
     evseStatusCode = EVSE_Ready;
   //  memset(&ChargerUI_Info, 0, sizeof(stChargerUI_Info));
     curChagerStep = NONE_ID;
+    can_module.enqueue(Q_Available_2);
     plc_req_2 =0;
 }
 #ifdef THREAD_CHANGES
@@ -555,6 +556,8 @@ void dccomboplc_2::recieveData(QByteArray aData,int fd)
                 ChargerUI_Info_2.ui_Voltage = uvEVTargetVoltage->fValue;
                 ChargerUI_Info_2.ui_Current = uvEVTargetCurrent->fValue;
                 ChargerUI_Info_2.ui_Power = evMaxPowerLimit;
+                CAN_TX_2.Pm1_voltage = evTargetVoltage;
+
 #ifdef PLC_DEBUG
                 qDebug() << "ui voltage = " <<ChargerUI_Info.ui_Voltage ;
                 qDebug() << "ui current = " <<ChargerUI_Info.ui_Current ;
@@ -804,7 +807,7 @@ void dccomboplc_2::recieveData(QByteArray aData,int fd)
                         evseStatusCode = EVSE_Shutdown;
                         ChargerUI_Info_2.ui_Charger_ErrorCode = STAGE_B_DETECTED_2;
                     }
-                    qDebug() << "EV SWITCH 6 TO 9 v detected" << evseStatusCode<< endl;
+                    qDebug() << "G2 EV SWITCH 6 TO 9 v detected" << evseStatusCode<< endl;
                 }
                 /*else if( (pReportSTATE->info[0] == 12) && (Plc_Voltage == 6))
                 {
@@ -839,7 +842,7 @@ void dccomboplc_2::recieveData(QByteArray aData,int fd)
                      {
                          ChargerUI_Info_2.ui_Charger_ErrorCode = STAGE_B_DETECTED_2;
                      }
-                   qDebug() << "EV SWITCH "<<Plc_Voltage <<" TO 9 v detected_2" << evseStatusCode<< endl;
+                   qDebug() << "G2 EV SWITCH "<<Plc_Voltage <<" TO 9 v detected" << evseStatusCode<< endl;
                 }
                 else if((Plc_Voltage == 9 ) &&  pReportSTATE->info[0] == 12)
                 {

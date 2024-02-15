@@ -958,17 +958,18 @@ void Dcmodule::IO2_transmit(void)
     frame.data[6] = CAN_TX_2.HardReset; // Hardreset 0xA5
     frame.data[7] = 0xff;
 
-    if(CAN_TX_2.Load_Sharing == 0)
-    {
-        if(Sharing.G1_Need_Tb_LS == LS_Active)
-        {
-            Sharing.G1_Need_Tb_LS = LS_No;
-        }
-        if(Sharing.G2_Need_Tb_LS == LS_Active)
-        {
-             Sharing.G2_Need_Tb_LS = LS_No;
-        }
-    }
+//    if(CAN_TX_2.Load_Sharing == 0)
+//    {
+//        if(Sharing.G1_Need_Tb_LS == LS_Active)
+//        {
+//            Sharing.G1_Need_Tb_LS = LS_No;
+//        }
+//        if(Sharing.G2_Need_Tb_LS == LS_Active)
+//        {
+//             Sharing.G2_Need_Tb_LS = LS_No;
+//        }
+//    }
+
     nbytes = write(can2_fd, &frame, sizeof(frame));
     if (nbytes < 0) {
         perror("can raw socket write");

@@ -55,6 +55,7 @@ void dcComboPLC::initValues()
     Plc_Voltage = 12;
     evTargetCurrent = evTargetVoltage = 0;
     evseStatusCode = EVSE_Ready;
+    can_module.enqueue(Q_Available);
   //  g_bFast = false;
 
    // memset(&ChargerUI_Info, 0, sizeof(stChargerUI_Info));
@@ -716,7 +717,7 @@ void dcComboPLC::recieveData(QByteArray aData,int fd)
                 qDebug() << "uvEVMaximumVoltageLimit = " << uvEVMaximumVoltageLimit->sValue;
                 qDebug() << "uvEVMaximumPowerLimit = " << uvEVMaximumPowerLimit->sValue;
 #endif
-                evTargetVoltage = uvEVTargetVoltage->fValue;
+                evTargetVoltage = uvEVTargetVoltage->fValue;                
                 evMaxPowerLimit = uvEVMaximumPowerLimit->fValue;
                 g_SetCurrent1 =   uvEVTargetCurrent->fValue;
                 if(set_parameter.tempThresold_ED == true)
@@ -744,7 +745,8 @@ void dcComboPLC::recieveData(QByteArray aData,int fd)
 
                 ChargerUI_Info.ui_Voltage = uvEVTargetVoltage->fValue;
                 ChargerUI_Info.ui_Current = uvEVTargetCurrent->fValue;
-                ChargerUI_Info.ui_Power = evMaxPowerLimit;                               
+                ChargerUI_Info.ui_Power = evMaxPowerLimit;
+                CAN_TX.Pm1_voltage = evTargetVoltage;
 #ifdef PLC_DEBUG
                 qDebug() << "ui voltage = " <<ChargerUI_Info.ui_Voltage ;
                 qDebug() << "ui current = " <<ChargerUI_Info.ui_Current ;
